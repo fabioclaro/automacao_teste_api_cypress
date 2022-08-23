@@ -29,25 +29,56 @@ Cypress.Commands.add('token', (email, senha) => {
         url: 'login',
         body: {
             "email": email,
-            "password": senha 
+            "password": senha
         }
     }).then((response) => {
         expect(response.status).to.equal(200)
         return response.body.authorization
-    })
- })
+    });
+});
 
- Cypress.Commands.add('cadastrarProduto' , (token, produto, preco, descricao, quantidade) =>{
+Cypress.Commands.add('cadastrarProduto', (token, produto, preco, descricao, quantidade) => {
     cy.request({
-        method: 'POST', 
+        method: 'POST',
         url: 'produtos',
-        headers: {authorization: token}, 
+        headers: { authorization: token },
         body: {
             "nome": produto,
             "preco": preco,
             "descricao": descricao,
             "quantidade": quantidade
-          }, 
-          failOnStatusCode: false
-    })
- })
+        },
+        failOnStatusCode: false
+    });
+});
+
+Cypress.Commands.add('cadastrarUsuario', (nome, email, senha, validacao) => {
+    cy.request({
+        method: 'POST',
+        url: 'usuarios',
+        body: {
+            "nome": nome,
+            "email": email,
+            "password": senha,
+            "administrador": validacao,
+        },
+        failOnStatusCode: false
+    });
+});
+
+Cypress.Commands.add('editarUsuario', (nome, email, senha, validacao) => {
+    cy.request('usuarios').then(response => {
+        let id = response.body.usuarios[2]._id
+
+        cy.request({
+            method: 'PUT',
+            url: `usuarios/${id}`,
+            body: {
+                "nome": nome,
+                "email": email,
+                "password": senha,
+                "administrador": validacao,
+            }
+        });
+    });
+});

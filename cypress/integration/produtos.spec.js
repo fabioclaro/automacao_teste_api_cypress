@@ -21,7 +21,7 @@ describe('Testes da Funcionalidade Produtos', () => {
             //expect(response.body.produtos[9].nome).to.equal('Produto EBAC 436746')
             expect(response.status).to.equal(200)
             expect(response.body).to.have.property('produtos')
-            expect(response.duration).to.be.lessThan(20)
+            expect(response.duration).to.be.lessThan(90)
         })
     });
 
@@ -60,9 +60,9 @@ describe('Testes da Funcionalidade Produtos', () => {
                 headers: {authorization: token}, 
                 body: 
                 {
-                    "nome": "Produto Editado 45642083",
+                    "nome": "Celular color",
                     "preco": 100,
-                    "descricao": "Produto editado",
+                    "descricao": "celular colorido",
                     "quantidade": 100
                   }
             }).then(response => {
@@ -72,22 +72,19 @@ describe('Testes da Funcionalidade Produtos', () => {
     });
 
     it('Deve editar um produto cadastrado previamente', () => {
-        let produto = `Produto EBAC ${Math.floor(Math.random() * 100000000)}`
-        cy.cadastrarProduto(token, produto, 250, "Descrição do produto novo", 180)
-        .then(response => {
-            let id = response.body._id
-
+        cy.request('produtos').then(response => {
+            let id = response.body.produtos[1]._id
             cy.request({
-                method: 'PUT', 
-                url: `produtos/${id}`,
-                headers: {authorization: token}, 
-                body: 
+                method: 'PUT',
+                url: `http://localhost:3000/produtos/${id}`,
+                headers: { authorization: token },
+                body:
                 {
-                    "nome": produto,
-                    "preco": 200,
-                    "descricao": "Produto editado",
-                    "quantidade": 300
-                  }
+                    "nome": "Produto Editado 2566880",
+                    "preco": 120,
+                    "descricao": "Produto Editado",
+                    "quantidade": 110
+                }
             }).then(response => {
                 expect(response.body.message).to.equal('Registro alterado com sucesso')
             })
