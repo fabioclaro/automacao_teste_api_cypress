@@ -65,20 +65,3 @@ Cypress.Commands.add('cadastrarUsuario', (nome, email, senha, validacao) => {
         failOnStatusCode: false
     });
 });
-
-Cypress.Commands.add('editarUsuario', (nome, email, senha, validacao) => {
-    cy.request('usuarios').then(response => {
-        let id = response.body.usuarios[2]._id
-
-        cy.request({
-            method: 'PUT',
-            url: `usuarios/${id}`,
-            body: {
-                "nome": nome,
-                "email": email,
-                "password": senha,
-                "administrador": validacao,
-            }
-        });
-    });
-});
