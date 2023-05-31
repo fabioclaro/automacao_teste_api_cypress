@@ -60,10 +60,10 @@ describe('Testes da Funcionalidade Produtos', () => {
                 headers: {authorization: token}, 
                 body: 
                 {
-                    "nome": "Celular color",
+                    "nome": "Produto Editado",
                     "preco": 100,
-                    "descricao": "celular colorido",
-                    "quantidade": 100
+                    "descricao": "Produto Editado",
+                    "quantidade": 109
                   }
             }).then(response => {
                 expect(response.body.message).to.equal('Registro alterado com sucesso')
@@ -73,17 +73,17 @@ describe('Testes da Funcionalidade Produtos', () => {
 
     it('Deve editar um produto cadastrado previamente', () => {
         cy.request('produtos').then(response => {
-            let id = response.body.produtos[1]._id
+            let id = response.body.produtos[0]._id
             cy.request({
                 method: 'PUT',
                 url: `http://localhost:3000/produtos/${id}`,
                 headers: { authorization: token },
                 body:
                 {
-                    "nome": "Produto Editado 2566880",
+                    "nome": "Produto Editado 2566801",
                     "preco": 120,
                     "descricao": "Produto Editado",
-                    "quantidade": 110
+                    "quantidade": 111
                 }
             }).then(response => {
                 expect(response.body.message).to.equal('Registro alterado com sucesso')
